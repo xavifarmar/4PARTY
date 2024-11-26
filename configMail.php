@@ -1,5 +1,5 @@
 <?php 
-require 'vendor/autoload.php'
+require 'vendor/autoload.php';
 
 //Configuración del correo (Servidor SMTP)
 $mail = new PHPMailer\PHPMailer\PHPMailer();
