@@ -9,7 +9,7 @@ $mail->SMTPAuth = true; //Esta opción autentica el usuario antes de enviar un c
 $mail->Username = 'tu_correo@gmail.com'; // Mi correo de Gmail
 $mail->Password = 'tu_contraseña_de_aplicacion'; // Contraseña de la aplicación de Gmail (si usas 2FA)
 $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS; //Esto asegura que la conexión sea segura mediante cifrado SSL/TLS.
-$mail->Port = 587 //El puerto que utiliza GMAIL, para el servidor de STMP
+$mail->Port = 587;//El puerto que utiliza GMAIL, para el servidor de STMP
 
 
 
