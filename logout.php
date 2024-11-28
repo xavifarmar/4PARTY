@@ -4,7 +4,7 @@ session_start(); // Iniciar sesión
 var_dump($_SESSION);  // Imprime el contenido de la sesión
 echo '</pre>';*/
 
-require "config/conexion.php";
+require "conexion.php";
 
 // Verificar si el usuario está logueado
 if (isset($_SESSION['user_id'])) {

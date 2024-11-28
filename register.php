@@ -1,5 +1,5 @@
 <?php
-require "config/conexion.php"; // Asegúrate de que el archivo de conexión esté correctamente configurado
+require "conexion.php"; // Asegúrate de que el archivo de conexión esté correctamente configurado
 
 // Captura las variables del formulario
 $username = $_POST['username'];
