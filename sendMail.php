@@ -1,7 +1,7 @@
 <?php
-require 'conexion.php';
+require 'config/conexion.php';
 // configmail.php
-require_once 'mailHelper.php';
+require_once '/config/configMail.php';
 
 $email = $_POST['email'];
 

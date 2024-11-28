@@ -1,6 +1,6 @@
 <?php
 session_start(); 
-require "conexion.php";
+require "config/conexion.php";
 
 
 // Verifica si el formulario se ha enviado
