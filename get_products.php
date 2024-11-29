@@ -1,37 +1,45 @@
 <?php
-// Conexión a la base de datos
 require 'conexion.php';
 
-// Consulta para obtener todos los productos
-$query = "SELECT id, name, description, price, stock, category_id, color_id, gender_id, clothing_type_id, view_count, like_count, created_at FROM products";
-$result = $conn->query($query);
+// Consulta para obtener productos y sus imágenes
+$sql = "SELECT p.id, p.name, p.price, pi.image_url, pi.is_primary 
+        FROM products p 
+        LEFT JOIN product_images pi ON p.id = pi.product_id
+        ORDER BY p.id";
+$result = $conn->query($sql);
 
-// Verifica si hay productos1
+// Verificar si hay productos
 if ($result->num_rows > 0) {
-    // Array para almacenar los productos
+    // Empezamos la estructura de respuesta JSON
     $products = [];
 
-    // Recorre los productos y los agrega al array
-    while ($row = $result->fetch_assoc()) {
-        $products[] = [
-            'id' => $row['id'],
-            'name' => $row['name'],
-            'description' => $row['description'],
-            'price' => $row['price'],
-            'stock' => $row['stock'],
-            'category_id' => $row['category_id'],
-            'color_id' => $row['color_id'],
-            'gender_id' => $row['gender_id'],
-            'clothing_type_id' => $row['clothing_type_id'],
-            'view_count' => $row['view_count'],
-            'like_count' => $row['like_count'],
-            'created_at' => $row['created_at']
-        ];
+    // Recorremos los productos
+    while($row = $result->fetch_assoc()) {
+        $product_id = $row['id'];
+
+        // Si el producto no está en el array, lo agregamos
+        if (!isset($products[$product_id])) {
+            $products[$product_id] = [
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'price' => $row['price'],
+                'images' => []
+            ];
+        }
+
+        // Agregamos la imagen si está disponible
+        if ($row['image_url']) {
+            $products[$product_id]['images'][] = [
+                'url' => $row['image_url'],
+                'is_primary' => $row['is_primary']
+            ];
+        }
     }
 
-    // Retorna la respuesta en formato JSON
-    echo json_encode($products);
+    // Devolvemos los productos en formato JSON
+    echo json_encode(array_values($products));
 } else {
+    // Si no hay productos, devolvemos un array vacío
     echo json_encode([]);
 }
 
