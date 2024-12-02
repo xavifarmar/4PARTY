@@ -32,12 +32,14 @@ def  read_csv():
             query_product = (f"INSERT INTO products (name, price, stock, category_id, color_id, gender_id, clothing_type_id, created_at ) 
              VALUES (%s, %s, 100, %s, %s, %s, %s, %s, %s, %s, %s, NOW()")
 
-            cursor.execute(query_product, (product_name, price, category_id_value, color_id_value, gender_id_value, type_id_value)
+            cursor.execute(query_product, (product_name, price, category_id_value, color_id_value, gender_id_value, type_id_value))
             
             #Insertar en la tabla productos
-
+            query_images = (f"INSERT INTO product_images (product_id, image_url, is_primary) 
+                          VALUES (%s, %s, %s)")
             
-            )
+            cursor.execute(query_images(cursor.lastrowid, url_image))
+            
 
 def color_id(colors):
    
@@ -59,7 +61,7 @@ def color_id(colors):
         'Turquesa': 15,
         'Marron': 16
         }
-        
+
         #Busca en Diccionario el color que hay
         colors_id.get(colors, None)
 
