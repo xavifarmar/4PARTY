@@ -23,7 +23,7 @@ if ($result->num_rows > 0) {
                 'id' => $row['id'],
                 'name' => $row['name'],
                 'price' => $row['price'],
-                'images' => []
+                'images' => $row['image']
             ];
         }
 
