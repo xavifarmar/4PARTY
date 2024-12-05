@@ -7,8 +7,8 @@ INNER JOIN product_images ON (products.id = product_images.product_id) ";
 $sql="  SELECT p.name, p.price, pi.image_url, pi.is_primary 
         FROM products p 
         INNER JOIN product_images pi ON p.id = pi.product_id
-        ORDER BY p.id
-        GROUP BY p.name";
+        GROUP BY p.name ORDER BY p.id";
+        
 
 $stmt = $conn->prepare($sql);
 
@@ -38,7 +38,53 @@ if ($stmt->execute()){
 $stmt->close();
 $conn->close();
 
-//SELECT name, color_id, price FROM products WHERE name = name;
+function getColours(){
+    $sql = "SELECT p.name, p.price, pi.image_url, pi.is_primary, pi.color 
+    FROM products p 
+    INNER JOIN product_images pi ON p.id = pi.product_id 
+    WHERE p.name = ?";
+
+// Preparar la consulta
+$stmt = $conn->prepare($sql);
+
+if ($stmt === false) {
+echo json_encode(["error" => "Error al preparar la consulta"]);
+exit;
+}
+
+// Vincular parámetros (el nombre del producto)
+$stmt->bind_param("s", $product_name);
+
+// Ejecutar la consulta
+if ($stmt->execute()) {
+$result = $stmt->get_result();
+
+// Verificar si se encontraron resultados
+if ($result->num_rows > 0) {
+    $resultados = [];
+    
+    while ($fila = $result->fetch_assoc()) {
+        $resultados[] = $fila;
+    }
+    
+    // Devolver los resultados en formato JSON
+    echo json_encode($resultados);
+} else {
+    echo json_encode(["message" => "No se encontraron variaciones para este producto"]);
+}
+} else {
+echo json_encode(["error" => "Error al ejecutar la consulta"]);
+}
+
+// Cerrar la consulta y la conexión
+$stmt->close();
+$conn->close();
+}
+
+
+
+
+
 
 ?>
 
