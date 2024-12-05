@@ -7,7 +7,8 @@ INNER JOIN product_images ON (products.id = product_images.product_id) ";
 $sql="  SELECT p.name, p.price, pi.image_url, pi.is_primary 
         FROM products p 
         INNER JOIN product_images pi ON p.id = pi.product_id
-        ORDER BY p.id";
+        ORDER BY p.id
+        GROUP BY p.name";
 
 $stmt = $conn->prepare($sql);
 
@@ -36,5 +37,8 @@ if ($stmt->execute()){
 //Cerrar conexion
 $stmt->close();
 $conn->close();
+
+//SELECT name, color_id, price FROM products WHERE name = name;
+
 ?>
 
