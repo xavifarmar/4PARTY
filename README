@@ -1,11 +1,26 @@
-COSAS A AÑADIR:
+# 4party - La app de moda para todos
 
-- Restablecer constraseña con codigo de verificación
-- Comprobar que los edit texts se escriba (Obligar a poner @gmail...)
+4party es una aplicación móvil diseñada para facilitar la compra de ropa y accesorios de una amplia variedad de marcas. Con una interfaz sencilla y moderna, 4party ofrece a sus usuarios una experiencia única en la compra de productos de moda. ¡Descubre lo último en ropa, compra y crea tu look con facilidad!
 
-TAREAS 
--Comprobar que se envie el correo (sendMail.php)
--Comprobar el codigo creado (vewifycode.php)
--Update PASSWORD (resetPasswd.php)
+## Características
 
--ORDENAR EL CODIGO Y ARCHIVOS;
+- **Catálogo de productos**: Accede a una amplia variedad de productos de ropa y accesorios, desde camisas hasta zapatillas deportivas.
+- **Paginación de productos**: Si tienes muchos productos, 4party los divide en páginas para que sea más fácil explorar.
+- **Búsqueda eficiente**: Encuentra fácilmente lo que buscas filtrando por categoría, color, o nombre del producto.
+- **Detalles del producto**: Obtén información detallada de cada prenda, incluyendo imágenes, descripciones y precios.
+- **Interfaz amigable**: La aplicación está diseñada con una interfaz intuitiva, permitiendo una navegación fluida y una experiencia de compra agradable.
+- **Favoritos**: Guarda tus productos favoritos para que puedas verlos después o comprarlos fácilmente.
+
+## Requisitos
+
+- **Android 5.0 o superior**.
+- **Conexión a Internet** para cargar los productos desde el servidor.
+
+## Instalación
+
+Para instalar y ejecutar la aplicación en tu dispositivo Android, sigue estos pasos:
+
+1. Clona el repositorio o descarga el código fuente.
+   ```bash
+   git clone https://github.com/xavifarmar/4PARTY_APP
+
