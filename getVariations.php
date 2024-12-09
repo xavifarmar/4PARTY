@@ -4,7 +4,7 @@ require 'conexion.php';
 // Suponiendo que el nombre del producto es enviado en una variable 'product_name' en la consulta
 $product_name = $_GET['product_name'];  // O usa el método adecuado para obtener el parámetro de la URL
 
-$sql = "SELECT p.name, p.price, pi.image_url, pi.is_primary, pi.color
+$sql = "SELECT p.name, p.price, pi.image_url, pi.is_primary, p.color_id
         FROM products p 
         INNER JOIN product_images pi ON p.id = pi.product_id
         WHERE p.name = ?";  // Usamos ? para un parámetro de consulta segura
@@ -34,7 +34,7 @@ if ($result->num_rows > 0) {
         } else {
             // Almacenamos las variaciones
             $variations[] = [
-                'color' => $fila['color'],
+                'color' => $fila['color_id'],
                 'image_url' => $fila['image_url']
             ];
         }
