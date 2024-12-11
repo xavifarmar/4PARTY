@@ -8,12 +8,12 @@ function addToCart(){
     $color_id = $_GET['color_id'];
     $size = $_GET['size']; 
 
-    if($p_name, $color_id){
+    if($p_name && $color_id){
 
         "SELECT product_id FROM products WHERE name = ?";
     } 
     else{
-        echo "No se ha encontrado el producto"
+        echo "No se ha encontrado el producto"; 
     }
 
     //Ver que usuario es. 
