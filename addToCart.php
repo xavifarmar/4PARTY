@@ -27,9 +27,10 @@ if ($product_name && $color_id && $size) {
             $product_id = $result->fetch_assoc()['id'];
 
             // Insertar el producto en el carrito
-            $sql = "INSERT INTO shopping_cart_items (user_id, product_id, quantity, size, added_at) VALUES (?, ?, ?, NOW())";
+            $sql = "INSERT INTO shopping_cart_items (user_id, product_id, quantity, size, added_at) VALUES (?, ?, ?, ?, NOW())";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("iis", $user_id, $product_id, $size);
+            $quantity = 1;
+            $stmt->bind_param("iiis", $user_id, $product_id, $quantity, $size);
             if ($stmt->execute()) {
                 echo json_encode(["status" => "success", "message" => "Product added to cart"]);
             } else {
