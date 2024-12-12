@@ -52,4 +52,32 @@
         echo json_encode(["status" => "error", "message" => "Failed to execute query"]);
     }
 
+
+    function getTotalPriceCart(){
+
+
+    $sql = "SELECT c.product_id, SUM(p.price)
+    FROM shopping_cart_items c
+    INNER JOIN products p ON c.product_id = p.id
+    WHERE c.user_id = ?;";
+
+
+    $stmt =  $conn -> prepare($sql);
+
+    if ($stmt == false){
+        echo( "Error en la consulta");
+    }
+
+    $stmt -> bind_param("s", $user_id);
+
+    if ($stmt->execute()){
+        $result = get_result();
+        echo json_encode(["total_price" => $result]);
+    }
+
+
+
+
+
+}
 ?>
