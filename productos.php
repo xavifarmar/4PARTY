@@ -4,10 +4,11 @@ require 'conexion.php';
 $sql1 = "SELECT products.id, products.name, products.price product_images.image_url FROM products
 INNER JOIN product_images ON (products.id = product_images.product_id) ";
 
-$sql="  SELECT p.name, p.price, pi.image_url, pi.is_primary 
+$sql="  SELECT p.name, p.price, pi.image_url, pi.is_primary, p.color_id 
         FROM products p 
         INNER JOIN product_images pi ON p.id = pi.product_id
-        GROUP BY p.name ORDER BY p.id";
+        WHERE pi.is_primary = 1
+        GROUP BY p.name ORDER BY p.id" ;
         
 
 $stmt = $conn->prepare($sql);
@@ -39,10 +40,10 @@ $stmt->close();
 $conn->close();
 
 function getColours(){
-    $sql = "SELECT p.name, p.price, pi.image_url, pi.is_primary, pi.color 
+    $sql = "SELECT p.name, p.price, pi.image_url, pi.is_primary, p.color_id 
     FROM products p 
     INNER JOIN product_images pi ON p.id = pi.product_id 
-    WHERE p.name = ?";
+    WHERE p.name = ? AND pi.is_primary = 1";
 
 // Preparar la consulta
 $stmt = $conn->prepare($sql);
