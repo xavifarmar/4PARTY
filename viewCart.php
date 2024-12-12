@@ -52,6 +52,12 @@
         echo json_encode(["status" => "error", "message" => "Failed to execute query"]);
     }
 
+    function updateQuantityProducts(){
+        $sql = "UPDATE FROM shopping_cart_items  (quantity = ?) ";
+    }
+
+
+
 
     function getTotalPriceCart(){
 
