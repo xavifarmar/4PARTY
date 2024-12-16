@@ -9,13 +9,8 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    getLikes();  // Llamar a la función para obtener los likes
-} else {
-    echo json_encode(["status" => "error", "message" => "Método de solicitud incorrecto"]);
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+/*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verificar si el parámetro product_name está en la solicitud
     if (isset($_POST['product_name'])) {
         $product_name = $_POST['product_name'];  // Recibir el nombre del producto
@@ -26,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 } else {
     echo "Método de solicitud incorrecto.";
-}
+}*/
 
 
 function addLike($product_name){
@@ -91,7 +86,7 @@ function removeLike(){
         echo json_encode(["status" => "error", "message" => "Error al eliminar el like"]);
     }
 }
-*/
+
 function getLikes(){
     global $conn;
 
@@ -108,7 +103,7 @@ function getLikes(){
         exit();
     }
 
-    $stmt->bind_param("i", $user_id);  // Corregir bind_param
+    $stmt->bind_params("i", $user_id);  // Corregir bind_param
 
     // Crear lista de Likes
     

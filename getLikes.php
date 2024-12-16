@@ -1,7 +1,10 @@
 <?php 
 require 'conexion.php';
+<<<<<<< HEAD
 start_session();
 
+=======
+>>>>>>> 64f54610e02c88de0e3dd10206c81de64a5eb491
 
 $sql = "SELECT pl.product_id, pi.image_url, p.name
             FROM product_likes pl
@@ -33,7 +36,11 @@ $sql = "SELECT pl.product_id, pi.image_url, p.name
                     'image_url' => $row['image_url']
                 ];
             }
+<<<<<<< HEAD
             echo json_encode(array_values($likesItems));  // Corregir la sintaxis
+=======
+            echo json_encode(["status" => "success", "likes_items" => $likesItems]);  // Corregir la sintaxis
+>>>>>>> 64f54610e02c88de0e3dd10206c81de64a5eb491
         } else {
             echo json_encode(["status" => "error", "message" => "No tienes productos en favoritos"]);
         }
