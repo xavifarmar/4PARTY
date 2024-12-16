@@ -35,7 +35,7 @@ function addLike(){
             $stmt = bind_params("sib", $user_id, $product_id, true);
 
             if($stmt -> execute()){
-                echo json_encode("message" -> "Product liked")
+                echo json_encode(["message" => "Product liked"]);
             }else {
                 echo json_encode(["status" => "error", "message" => "Error adding product to cart"]);
             }
@@ -45,9 +45,8 @@ function addLike(){
     } else {
         echo json_encode(["status" => "error", "message" => "Database query failed"]);
     }
-} else {
-    echo json_encode(["status" => "error", "message" => "Missing parameters"]);
 }
+
   
 
 
