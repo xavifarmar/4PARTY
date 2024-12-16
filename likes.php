@@ -8,8 +8,11 @@ if (isset($_SESSION['user_id'])) {
     echo json_encode(["status" => "error", "message" => "No session active"]);
     exit();
 }
-
-
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    getLikes();  // Llamar a la función para obtener los likes
+} else {
+    echo "Error en el metodo de solicitud";
+}
 /*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verificar si el parámetro product_name está en la solicitud
     if (isset($_POST['product_name'])) {
@@ -20,8 +23,9 @@ if (isset($_SESSION['user_id'])) {
         echo "Error: No se ha enviado el nombre del producto.";
     }
 } else {
-    echo "Método de solicitud incorrecto.";
+    getLikes();
 }*/
+
 
 
 function addLike($product_name){
@@ -103,7 +107,7 @@ function getLikes(){
         exit();
     }
 
-    $stmt->bind_params("i", $user_id);  // Corregir bind_param
+    $stmt->bind_param("i", $user_id);  // Corregir bind_param
 
     // Crear lista de Likes
     
