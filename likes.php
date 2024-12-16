@@ -98,7 +98,7 @@ function getLikes(){
             FROM product_likes pl
             JOIN products p ON pl.product_id = p.id
             JOIN product_images pi ON pi.product_id = pl.product_id
-            WHERE pl.user_id = ?";
+            WHERE pl.user_id = 3";
 
     $stmt = $conn->prepare($sql);
 
@@ -107,7 +107,7 @@ function getLikes(){
         exit();
     }
 
-    $stmt->bind_param("i", $user_id);  // Corregir bind_param
+    //$stmt->bind_param("i", 3);  // Corregir bind_param
 
     // Crear lista de Likes
     
