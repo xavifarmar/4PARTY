@@ -1,10 +1,11 @@
 <?php
 require 'conexion.php';
 
-// Consulta para obtener productos y sus imágenes
-$sql = "SELECT p.id, p.name, p.price, pi.image_url, pi.is_primary 
+// Consulta para obtener productos y sus imágenes y sus likes
+$sql = "SELECT p.id, p.name, p.price, pi.image_url, pi.is_primary, li.liked
         FROM products p 
         LEFT JOIN product_images pi ON p.id = pi.product_id
+        JOIN liked_products li ON li.product_id = p.id
         ORDER BY p.id";
 $result = $conn->query($sql);
 
@@ -24,6 +25,7 @@ if ($result->num_rows > 0) {
                 'name' => $row['name'],
                 'price' => $row['price'],
                 'images' => $row['image'],
+                'liked' => $row['liked']
     
             ];
         }
