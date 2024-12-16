@@ -9,7 +9,13 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
-/*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    getLikes();  // Llamar a la función para obtener los likes
+} else {
+    echo json_encode(["status" => "error", "message" => "Método de solicitud incorrecto"]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verificar si el parámetro product_name está en la solicitud
     if (isset($_POST['product_name'])) {
         $product_name = $_POST['product_name'];  // Recibir el nombre del producto
@@ -20,7 +26,7 @@ if (isset($_SESSION['user_id'])) {
     }
 } else {
     echo "Método de solicitud incorrecto.";
-}*/
+}
 
 
 function addLike($product_name){
@@ -85,16 +91,16 @@ function removeLike(){
         echo json_encode(["status" => "error", "message" => "Error al eliminar el like"]);
     }
 }
-
+*/
 function getLikes(){
     global $conn;
 
     $sql = "SELECT pl.product_id, pi.image_url, p.name
             FROM product_likes pl
             JOIN products p ON pl.product_id = p.id
-            JOIN product_images pi ON pi.product_id = p.id
+            JOIN product_images pi ON pi.product_id = pl.product_id
             WHERE pl.user_id = ?";
-            
+
     $stmt = $conn->prepare($sql);
 
     if ($stmt === false){
@@ -102,22 +108,24 @@ function getLikes(){
         exit();
     }
 
-    $stmt->bind_params("i", $user_id);  // Corregir bind_param
+    $stmt->bind_param("i", $user_id);  // Corregir bind_param
 
     // Crear lista de Likes
-    $likesItems = [];
-
+    
     if ($stmt->execute()){
         $result = $stmt->get_result();
 
         if($result->num_rows > 0){
+
+            $likesItems = [];
+
             while ($row = $result->fetch_assoc()){
                 $likesItems[] = [
                     'name' => $row['name'],
                     'image_url' => $row['image_url']
                 ];
             }
-            echo json_encode(['likes_items' => $likesItems]);  // Corregir la sintaxis
+            echo json_encode(["status" => "success", "likes_items" => $likesItems]);  // Corregir la sintaxis
         } else {
             echo json_encode(["status" => "error", "message" => "No tienes productos en favoritos"]);
         }
