@@ -13,12 +13,43 @@ $product_name ['product_name'];
 
 
 function addLike(){
+    $sql = "SELECT id FROM products WHERE name = ?";
 
-    //Insertar el like en la base de datos
-    $sql = "INSERT INTO product_likes (user_id, product_id, liked, created_at,) VALUES (?, ?, ?, NOW)";
+    $stmt = $conn->prepare();
 
+    if ($stmt = false){
+        echo "Error en la conexion";
+    }
 
+    $stmt = bind_params('s', $product_name);
+    
+    if ($stmt -> execute){
+        $result = $stmt -> get_result();
+        if ($result = $num_rows > 0){
+            $product_id = $result->fetch_assoc['id'];
+
+            //Insertar el like en la base de datos
+            $sql = "INSERT INTO product_likes (user_id, product_id, liked, created_at,) VALUES (?, ?, ?, NOW)";
+            
+            $stmt = $conn-> prepare($sql); 
+            $stmt = bind_params("sib", $user_id, $product_id, true);
+
+            if($stmt -> execute()){
+                echo json_encode("message" -> "Product liked")
+            }else {
+                echo json_encode(["status" => "error", "message" => "Error adding product to cart"]);
+            }
+        } else {
+            echo json_encode(["status" => "error", "message" => "Product not found"]);
+        }
+    } else {
+        echo json_encode(["status" => "error", "message" => "Database query failed"]);
+    }
+} else {
+    echo json_encode(["status" => "error", "message" => "Missing parameters"]);
 }
+  
+
 
 function removeLike(){
 
