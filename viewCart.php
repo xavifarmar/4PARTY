@@ -101,6 +101,8 @@ function getTotalPriceCart($user_id, $conn) {
     $stmt->close();
 }
 
+
+
 // Función para actualizar la cantidad de un producto en el carrito
 function updateQuantity($user_id, $product_id, $new_quantity, $conn) {
     $sql = "UPDATE shopping_cart_items
