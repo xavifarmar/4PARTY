@@ -9,24 +9,28 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Determinar si la solicitud es GET o POST
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     getLikes($user_id);  // Llamar a la función para obtener los likes
-} else { 
-    addLike($user_id)
-   ;
-}
-/*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Verificar si el parámetro product_name está en la solicitud
-    if (isset($_POST['product_name'])) {
-        $product_name = $_POST['product_name'];  // Recibir el nombre del producto
-        // Aquí puedes realizar las operaciones con el nombre del producto
-       ;  // Llamar a la función addLike
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Comprobar qué acción se debe tomar: "add" o "remove"
+    if (isset($_POST['action'])) {
+        $action = $_POST['action'];
+
+        if ($action == 'addLike') {
+            addLike($user_id);  // Llamar a la función para agregar un like
+        } else if ($action == 'removeLike') {
+            removeLike($user_id);  // Llamar a la función para eliminar un like
+        } else {
+            echo json_encode(["status" => "error", "message" => "Acción no válida"]);
+        }
     } else {
-        echo "Error: No se ha enviado el nombre del producto.";
+        echo json_encode(["status" => "error", "message" => "Acción no especificada"]);
     }
 } else {
-
-}*/
+    echo json_encode(["status" => "error", "message" => "Método de solicitud no soportado"]);
+}
+    
 
 
 
@@ -76,10 +80,12 @@ function addLike($user_id){
 }
 
 function removeLike($user_id){
+    $product_name = $_POST['product_name'];  // Obtener el nombre del producto desde la solicitud
+
     global $conn;
 
-    // Eliminar el like de la base de datos
-    $sql = "DELETE FROM product_likes WHERE user_id = ? AND product_id = ?";
+    // Obtener el ID del producto basado en su nombre
+    $sql = "SELECT id FROM products WHERE name = ?";
     $stmt = $conn->prepare($sql);
 
     if ($stmt === false){
@@ -87,12 +93,35 @@ function removeLike($user_id){
         exit();
     }
 
-    $stmt->bind_param("ii", $user_id, $product_id);  // Corregir bind_param
-
+    $stmt->bind_param('s', $product_name);  // Corregir bind_param
     if ($stmt->execute()){
-        echo json_encode(["message" => "Like eliminado"]);
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0){
+            $product = $result->fetch_assoc();
+            $product_id = $product['id'];
+
+            // Eliminar el like de la base de datos
+            $sql = "DELETE FROM product_likes WHERE user_id = ? AND product_id = ?";
+            $stmt = $conn->prepare($sql);
+
+            if ($stmt === false){
+                echo json_encode(["status" => "error", "message" => "Error al preparar la consulta"]);
+                exit();
+            }
+
+            // Bind de los parámetros para eliminar el like
+            $stmt->bind_param("ii", $user_id, $product_id);
+
+            if ($stmt->execute()){
+                echo json_encode(["message" => "Like eliminado"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error al eliminar el like"]);
+            }
+        } else {
+            echo json_encode(["status" => "error", "message" => "Producto no encontrado"]);
+        }
     } else {
-        echo json_encode(["status" => "error", "message" => "Error al eliminar el like"]);
+        echo json_encode(["status" => "error", "message" => "Falló la consulta a la base de datos"]);
     }
 }
 
