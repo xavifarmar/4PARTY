@@ -8,27 +8,32 @@ if (isset($_SESSION['user_id'])) {
     echo json_encode(["status" => "error", "message" => "No session active"]);
     exit();
 }
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    getLikes();  // Llamar a la función para obtener los likes
-} else {
-    echo "Error en el metodo de solicitud";
+    getLikes($user_id);  // Llamar a la función para obtener los likes
+} else { 
+    addLike($user_id)
+   ;
 }
 /*if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verificar si el parámetro product_name está en la solicitud
     if (isset($_POST['product_name'])) {
         $product_name = $_POST['product_name'];  // Recibir el nombre del producto
         // Aquí puedes realizar las operaciones con el nombre del producto
-        addLike($product_name);  // Llamar a la función addLike
+       ;  // Llamar a la función addLike
     } else {
         echo "Error: No se ha enviado el nombre del producto.";
     }
 } else {
-    getLikes();
+
 }*/
 
 
 
-function addLike($product_name){
+function addLike($user_id){
+
+    $product_name = $_POST['product_name'];
+
     global $conn;  // Usar la variable de conexión global
 
     $sql = "SELECT id FROM products WHERE name = ?";
@@ -47,7 +52,7 @@ function addLike($product_name){
             $product_id = $product['id'];
 
             // Insertar el like en la base de datos
-            $sql = "INSERT INTO product_likes (user_id, product_id, liked, created_at) VALUES (?, ?, ?, NOW())";
+            $sql = "INSERT INTO product_likes (user_id, product_id, is_liked, created_at) VALUES (?, ?, 1, NOW())";
             $stmt = $conn->prepare($sql); 
             if ($stmt === false){
                 echo json_encode(["status" => "error", "message" => "Error al preparar la consulta"]);
@@ -55,7 +60,7 @@ function addLike($product_name){
             }
 
             $liked = true;  // El like es verdadero
-            $stmt->bind_param("iii", $user_id, $product_id, $liked);  // Corregir bind_param
+            $stmt->bind_param("ii", $user_id, $product_id);  // Corregir bind_param
 
             if ($stmt->execute()){
                 echo json_encode(["message" => "Producto agregado a favoritos"]);
@@ -70,7 +75,7 @@ function addLike($product_name){
     }
 }
 
-function removeLike(){
+function removeLike($user_id){
     global $conn;
 
     // Eliminar el like de la base de datos
@@ -91,14 +96,14 @@ function removeLike(){
     }
 }
 
-function getLikes(){
+function getLikes($user_id){
     global $conn;
 
     $sql = "SELECT pl.product_id, pi.image_url, p.name
             FROM product_likes pl
             JOIN products p ON pl.product_id = p.id
             JOIN product_images pi ON pi.product_id = pl.product_id
-            WHERE pl.user_id = 3";
+            WHERE pl.user_id = ?";
 
     $stmt = $conn->prepare($sql);
 
@@ -107,7 +112,7 @@ function getLikes(){
         exit();
     }
 
-    //$stmt->bind_param("i", 3);  // Corregir bind_param
+    $stmt->bind_param("i", $user_id);  // Corregir bind_param
 
     // Crear lista de Likes
     
