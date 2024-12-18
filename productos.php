@@ -11,9 +11,6 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
-$sql1 = "SELECT products.id, products.name, products.price product_images.image_url FROM products
-INNER JOIN product_images ON (products.id = product_images.product_id) ";
-
 $sql="  SELECT p.name, p.price, pi.image_url, pi.is_primary, p.color_id, IFNULL(li.is_liked, 0) AS liked 
         FROM products p 
         INNER JOIN product_images pi ON p.id = pi.product_id
