@@ -11,8 +11,8 @@ cursor = db.cursor()
 
 def read_csv():
     # Leer archivo CSV
-    with open('./productos.csv', mode="r") as file:
-        reader = csv.reader(file, delimiter=";")
+    with open('./productos1.csv', mode="r") as file:
+        reader = csv.reader(file, delimiter=",")
         for row in reader:
             # Extraer cada valor del CSV
             product_name = row[0]
@@ -20,6 +20,7 @@ def read_csv():
             types = row[2]
             colors = row[3]
             url_image = row[4]
+            is_primary = row[5]
             genders = 0
             price = 10  # Asignar un precio válido
 
@@ -38,7 +39,7 @@ def read_csv():
 
             # Insertar en la tabla product_images
             query_images = "INSERT INTO product_images (product_id, image_url, is_primary) VALUES (%s, %s, %s)"
-            cursor.execute(query_images, (cursor.lastrowid, url_image, 1))
+            cursor.execute(query_images, (cursor.lastrowid, url_image, is_primary))
             db.commit()
 
 def color_id(colors):
