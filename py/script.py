@@ -11,7 +11,7 @@ cursor = db.cursor()
 
 def read_csv():
     # Leer archivo CSV
-    with open('./productos1.csv', mode="r") as file:
+    with open('./productos.csv', mode="r") as file:
         reader = csv.reader(file, delimiter=",")
         for row in reader:
             # Extraer cada valor del CSV
